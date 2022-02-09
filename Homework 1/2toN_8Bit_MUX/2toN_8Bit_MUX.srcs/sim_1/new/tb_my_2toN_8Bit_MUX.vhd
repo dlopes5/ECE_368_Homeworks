@@ -1,0 +1,64 @@
+-------LIBRARY--------
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+------ENTITY-----------
+ENTITY tb_my_2toN_8Bit_MUX IS 
+END tb_my_2toN_8Bit_MUX;
+
+-----ARCHITECTURE------
+ARCHITECTURE my_arch OF tb_my_2toN_8Bit_MUX IS 
+
+CONSTANT n: INTEGER:= 4; --CHANGE THIS TO MATCH THE n VALUE
+
+COMPONENT my_2toN_8Bit_MUX
+    GENERIC( n: INTEGER := 4); -- CHANGE THIS TO MATCH THE n VALUE
+    PORT( LineSel: IN STD_LOGIC_VECTOR(n-1 DOWNTO 0); Line: IN STD_LOGIC_VECTOR((2**n)*8-1 DOWNTO 0); y: OUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+END COMPONENT;
+
+SIGNAL A: STD_LOGIC_VECTOR(7 DOWNTO 0):= "10010101";
+SIGNAL B: STD_LOGIC_VECTOR(7 DOWNTO 0):= "10101010";
+SIGNAL C: STD_LOGIC_VECTOR(7 DOWNTO 0):= "10101010";
+SIGNAL D: STD_LOGIC_VECTOR(7 DOWNTO 0):= "01010110";
+SIGNAL E: STD_LOGIC_VECTOR(7 DOWNTO 0):= "10101001";
+SIGNAL F: STD_LOGIC_VECTOR(7 DOWNTO 0):= "01010100";
+SIGNAL G: STD_LOGIC_VECTOR(7 DOWNTO 0):= "01100101";
+SIGNAL H: STD_LOGIC_VECTOR(7 DOWNTO 0):= "00101010";
+
+SIGNAL I: STD_LOGIC_VECTOR(7 DOWNTO 0):= "10100111";
+SIGNAL J: STD_LOGIC_VECTOR(7 DOWNTO 0):= "00011101";
+SIGNAL K: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11000010";
+SIGNAL L: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11100001";
+SIGNAL M: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11101011";
+SIGNAL NN: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11111001";
+SIGNAL O: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11110001";
+SIGNAL P: STD_LOGIC_VECTOR(7 DOWNTO 0):= "11100000";
+
+SIGNAL InputVect: STD_LOGIC_VECTOR((2**n)*8-1 DOWNTO 0) := A&B&C&D&E&F&G&H&I&J&K&L&M&NN&O&P;
+SIGNAL InputSel: STD_LOGIC_VECTOR(n-1 DOWNTO 0):= "1110"; 
+SIGNAL y: STD_LOGIC_VECTOR(7 DOWNTO 0);
+
+BEGIN 
+    U1: my_2toN_8Bit_MUX GENERIC MAP(n =>n) PORT MAP( Line => InputVect, LineSel => InputSel, y => y);
+    
+    PROCESS 
+        BEGIN 
+            wait for 200 ns;
+            InputSel <= "0001";
+            wait for 200 ns;
+            InputSel <= "1010"; 
+            wait for 200 ns;
+            InputSel <= "1000"; 
+            wait for 200 ns;
+            InputSel <= "1111";
+            wait for 200 ns; 
+            InputSel <= "0101";
+            wait for 200 ns; 
+            InputSel <= "1110"; 
+            wait for 200 ns; 
+            InputSel <= "1100"; 
+            wait for 200 ns; 
+              
+    END PROCESS;
+END my_arch;
+    
